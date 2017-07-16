@@ -144,9 +144,8 @@ def pruning():
         for i in range(0,len(TMP)):
             # If degree of node i is less than medium_degree
             if len(TMP[i]) < medium_degree:
-                # Remove Vertice to easy the Maximal-Clique computation 
+                # Remove Vertice to easy the Maximal-Clique computation
                 TMP[i] = []
-
     return TMP
 #                                       END PRUNING
 
