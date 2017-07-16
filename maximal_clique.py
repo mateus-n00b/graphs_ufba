@@ -4,7 +4,7 @@ import random
 import networkx as nx
 import matplotlib.pyplot as plt
 from threading import Thread
-import os
+import os,math
 import mQueue
 
 #                           GLOBAL VARS
@@ -123,6 +123,23 @@ def basicMC(G):
     return Qmax
 #                                       END MC
 
+def pruning():
+    global G
+    TMP = G
+    medium_degree = 0.0
+    vertices = float(len(TMP))
+    for i in range(0,len(TMP)):
+        medium_degree+=len(TMP[i])
+
+    medium_degree/=vertices
+    medium_degree = math.ceil(medium_degree)
+
+    if medium_degree > 1.0:
+        for i in range(0,len(TMP)):
+            if len(TMP[i]) < medium_degree:
+                TMP[i] = []
+
+    return TMP
 
 #                                       BEGIN COMP
 
