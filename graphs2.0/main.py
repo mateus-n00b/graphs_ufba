@@ -1,4 +1,16 @@
 #!/usr/bin/env python
+# This program try to find the maximal-clique in a dynamic graph
+# by using a pruning approach.
+#
+# Authors:
+#          Mateus Sousa (UFBA)
+#          Iury Maia    (UFBA)
+#
+# Version 2.0
+# Now it is modular
+# License GPLv3+
+# TODO: Comment the code
+
 import time
 import timeit
 import random,sys
@@ -55,11 +67,9 @@ else:
 f =  "/tmp/pruning.txt" if PRUNING else "/tmp/noPruning.txt"
 
 while 1:
-    # BUG: Parece que nao podemos atribuir TMP = G pois ele se comporta como
-    # ponteiro. Entao, usamos o AUX.
     TMP = []
     TMP = G
-    
+
     # Write logs about exec time
     fp = open(f,'a+')
 
