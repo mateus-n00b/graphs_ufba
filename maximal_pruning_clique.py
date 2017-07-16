@@ -147,44 +147,6 @@ def pruning():
     return TMP
 #                                       END PRUNING
 
-#                                       BEGIN COMP
-
-def compGraph(graph,H,source):
-    queue = []
-    bfsInfo = []
-    distance = 0;
-    # Checa o numero de vertices
-    if len(graph) != len(H):
-        return False
-
-    for i in range(0,len(graph)):
-        if len(graph[i]) != len(H[i]):
-            return False
-
-    for i in range(0,len(graph)):
-        bfsInfo.append({'distance':None, 'predecessor':None})
-
-    bfsInfo[source]['distance'] = distance
-    queue = Queue()
-    queue.enqueue(source)
-
-    while queue.isEmpty():
-        u = queue.dequeue()
-        for i in range(0,len(graph[u])):
-            v = graph[u][i]
-            if graph[u][i] == H[u][i]:
-                if bfsInfo[v]['distance'] == None and v != source :
-                    queue.enqueue(v)
-                    bfsInfo[v]['distance'] = bfsInfo[u]['distance']+1
-                    bfsInfo[v]['predecessor'] = u
-            else:
-                return False
-
-    return True
-
-#                               END COMP
-
-
 #                               BEGIN RANDOMIC CHANGES
 
 # TODO: Implement this
@@ -201,8 +163,6 @@ def random_edges():
             if v!=u and v not in G[u]:
                 G[u].append(v)
                 #print "[+] Edge %d-%d added!" % (u,v)
-        # elif rand == 2:
-        #     time.sleep(random.random()*10)
             else:
                 if v!=u and v in G[u]:
                     G[u].remove(v)
@@ -261,6 +221,7 @@ while 1:
     # Calculates execution time
     print "[*] New Maximal clique is ", basicMC(G)
     elapsed = timeit.default_timer() - start_time
+    # Tracing
     fp.write(str(elapsed)+'\n')
     fp.close()
     time.sleep(2)
