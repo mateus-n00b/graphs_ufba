@@ -13,6 +13,8 @@ import math
 Q = []
 Qmax = []
 GLENGTH = 20
+# Weights
+W = {}
 #                           END VARS
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -151,23 +153,36 @@ def pruning():
 
 #                               BEGIN RANDOMIC CHANGES
 
-# TODO: Implement this
-def random_setWeight(u,v,w):
-    pass
+# Adds random Weights to the edges
+def random_setWeight(u,v):
+    global W
+    w = random.random()*10
+    if not W.has_key(u):
+        W[u] = {}
+        W[u][v] = w
+    else:
+        W[u][v] = w
 
+    print "[++] Weight added to (%d-%d)" % (u,v)
+
+# Adds edges in a random way
 def random_edges():
     global G
+    global W
+
     while 1:
         v = random.randint(0,len(G)-1)
         u = random.randint(0,len(G)-1)
-        rand = random.randint(0,2)
+        rand = random.randint(0,4)
         if rand == 1:
             if v!=u and v not in G[u]:
                 G[u].append(v)
+                random_setWeight(u,v)
                 #print "[+] Edge %d-%d added!" % (u,v)
-            else:
+            elif rand == 2:
                 if v!=u and v in G[u]:
                     G[u].remove(v)
+                    W[u].__delitem__(v)
                     #print "[-] Edge %d-%d deleted!" % (u,v)
 
         time.sleep(random.random())
@@ -176,11 +191,11 @@ def random_vertices():
     global G
     while 1:
         if len(G) < GLENGTH:
-            rand = random.randint(0,2)
+            rand = random.randint(0,4)
             if  rand == 1:
                 G.append([random.randint(0,len(G)-1)])
                 #print "[*] Vertice %d added" % len(G)
-            else:
+            elif rand == 2:
                 v = random.randint(0,len(G)-1)
                 G[v] = []
                 #print "[!] Vertice %d deleted!" % (v)
@@ -215,15 +230,25 @@ else:
 f =  "/tmp/pruning.txt" if PRUNING else "/tmp/noPruning.txt"
 
 while 1:
+    # BUG: Parece que nao podemos atribuir TMP = G pois ele se comporta como
+    # ponteiro. Entao, usamos o AUX.
+    TMP = []
+    TMP = G
+
+    # Write logs about exec time
     fp = open(f,'a+')
+
     start_time = timeit.default_timer()
     if PRUNING:
-        G = pruning()
+        TMP = pruning()
+
     Qmax = []
+    print "[*] New Maximal clique is ", basicMC(TMP)
     # Calculates execution time
-    print "[*] New Maximal clique is ", basicMC(G)
     elapsed = timeit.default_timer() - start_time
+
     # Tracing
     fp.write(str(elapsed)+'\n')
     fp.close()
+
     time.sleep(2)
