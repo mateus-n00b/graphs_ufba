@@ -31,6 +31,7 @@ class Graph(object):
                     self.G[u].append(v)
                     self.random_setWeight(u,v)
                     print "[+] Edge %d-%d added!" % (u,v)
+                    
             elif rand == 2:
                 if v!=u and v in self.G[u]:
                     self.G[u].remove(v)
@@ -46,6 +47,7 @@ class Graph(object):
                 if  rand == 1:
                     self.G.append([random.randint(0,len(self.G)-1)])
                     print "[*] Vertice %d added" % len(self.G)
+
                 elif rand == 2:
                     v = random.randint(0,len(self.G)-1)
                     self.G[v] = []

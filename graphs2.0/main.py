@@ -24,7 +24,7 @@ import show_graph
 #                           GLOBAL VARS
 Q = []
 Qmax = []
-GLENGTH = 20
+GLENGTH = 25
 # Weights
 W = {}
 #                           END VARS
@@ -46,7 +46,7 @@ G = [
 #                                      END GRAPHS
 
 #                                       Starting
-H = graph.Graph(G,20,W)
+H = graph.Graph(G,GLENGTH,W)
 H.run()
 mc = maximal.MC(Qmax)
 show = show_graph.Show(G)
@@ -67,17 +67,17 @@ else:
 f =  "/tmp/pruning.txt" if PRUNING else "/tmp/noPruning.txt"
 
 while 1:
-    TMP = []
-    TMP = G
-
+    # See: https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list, for explanations
+    # about this line.
+    TMP = list(G)
     # Write logs about exec time
     fp = open(f,'a+')
 
-    start_time = timeit.default_timer()
     if PRUNING:
-        TMP = pruning.pruning(G)
+        TMP = pruning.pruning(TMP)
 
     Qmax = []
+    start_time = timeit.default_timer()
     print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
     # Calculates execution time
     elapsed = timeit.default_timer() - start_time
@@ -86,4 +86,5 @@ while 1:
     fp.write(str(elapsed)+'\n')
     fp.close()
 
+    TMP = []
     time.sleep(2)

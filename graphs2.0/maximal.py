@@ -26,7 +26,7 @@ class MC(object):
 
     def basicMC(self,G,Qmax):
         V = [ i for i in range(0,len(G)) ]
-        TMP = G
+        TMP = list(G)
         self.Qmax = Qmax
         self.expand(V,TMP)
         log.logging(TMP,self.Qmax)
