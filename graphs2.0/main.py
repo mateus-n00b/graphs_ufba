@@ -75,7 +75,7 @@ while 1:
 
     start_time = timeit.default_timer()
     if PRUNING:
-        TMP = pruning(G)
+        TMP = pruning.pruning(G)
 
     Qmax = []
     print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
