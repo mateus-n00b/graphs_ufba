@@ -10,9 +10,11 @@ def graph_creator(nv):
     G = []
     for v in range(0,nv):
         G.append([])
-        e = random.randint(0,nv-1)
+        e = random.randint(0,nv)
         for j in range(0,e):
             edge = random.randint(0,e)
             if edge not in G[v] and edge != v:
                 G[v].append(edge)
+            else:
+                j-=1
     return G
