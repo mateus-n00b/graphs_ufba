@@ -49,7 +49,7 @@ G = [
 H = graph.Graph(G,GLENGTH,W)
 H.run()
 mc = maximal.MC(Qmax)
-show = show_graph.Show(G)
+show = show_graph.Show(G,Qmax)
 # Uncomment this to see the graph
 # show.run()
 

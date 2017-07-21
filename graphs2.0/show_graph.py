@@ -1,14 +1,15 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from threading import Thread
-import os
+import os,time
 
 class Show(object):
-    def __init__(self,G):
+    def __init__(self,G,Qmax):
         self.G = G
+        self.Qmax = Qmax
 
-    def showGraph():
-        TMP = self.G
+    def showGraph(self):
+        TMP = list(self.G)
         labeldict = {}
         K = nx.Graph()
 
@@ -25,7 +26,7 @@ class Show(object):
                     # Adding edges
                     H.add_edge(i,j)
                     # Condition to change colors
-                    if i in Qmax and j in Qmax:
+                    if i in self.Qmax and j in self.Qmax:
                         H[i][j]['good']=True
                     else:
                         H[i][j]['good']=False
