@@ -16,6 +16,7 @@ import timeit
 import random,sys
 
 # My imports
+import kruskal
 import maximal
 import graph
 import pruning
@@ -42,6 +43,14 @@ G = [
 [1,2,5],
 [1,3,4],
 ]
+
+# Set initial Weights
+for i in range(0,len(G)):
+    for j in G[i]:
+        G[i] = {}
+        G[i][j] = random.random()*10
+
+
 # - - - - - - - - - - - - - - - - - - - -
 #                                      END GRAPHS
 
@@ -79,6 +88,7 @@ while 1:
     Qmax = []
     start_time = timeit.default_timer()
     print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
+    # print "[*] New Maximal Tree >", kruskal.kruskal(TMP,W)
     # Calculates execution time
     elapsed = timeit.default_timer() - start_time
 
