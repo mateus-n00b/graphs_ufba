@@ -1,7 +1,7 @@
 
 #                                      BEGIN LOG
 def logging(graph,Qmax):
-    log = open("/graph/logging.txt","w")
+    log = open("/tmp/logging.txt","w")
     log.write("[LENGTH]-> (%d)\n" % len(graph))
     log.write("[Maximal Clique]-> %s  \n" % (str(Qmax)))
     for i in range(0,len(graph)):
