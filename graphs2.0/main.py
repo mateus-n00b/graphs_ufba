@@ -25,7 +25,7 @@ import show_graph
 #                           GLOBAL VARS
 Q = []
 Qmax = []
-GLENGTH = 50
+GLENGTH = 75
 # Weights
 W = {}
 #                           END VARS
@@ -72,7 +72,7 @@ else:
     print "python2.7 {0} <1> - enable prunning\n".format(sys.argv[0])
 
 # Enable time tracing
-f =  "/tmp/prunning.txt" if prunning else "/tmp/noprunning.txt"
+f =  "/tmp/prunning.txt" if PRUNNING  else "/tmp/noprunning.txt"
 cont = 0
 while cont < 1000:
     # See: https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list, for explanations
