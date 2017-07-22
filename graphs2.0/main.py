@@ -63,9 +63,9 @@ show = show_graph.Show(G,Qmax)
 
 
 # Using prunning?
-prunning = False
+PRUNNING = False
 if len(sys.argv) > 1:
-    prunning = True
+    PRUNNING = True
     print "\tUsing prunning approach\n"
 else:
     print "\tRunning without prunning approach\n"
@@ -84,7 +84,7 @@ while cont < 1000:
     # Write logs about exec time
     fp = open(f,'a+')
 
-    if prunning:
+    if PRUNNING:
         TMP = prunning.prunning(TMP)
 
     Qmax = []
