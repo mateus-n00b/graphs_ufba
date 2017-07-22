@@ -46,10 +46,9 @@ G = [
 
 # Set initial Weights
 for i in range(0,len(G)):
+    W[i] = {}
     for j in G[i]:
-        G[i] = {}
-        G[i][j] = random.random()*10
-
+        W[i][j] = random.randint(0,100)
 
 # - - - - - - - - - - - - - - - - - - - -
 #                                      END GRAPHS
@@ -78,7 +77,10 @@ f =  "/tmp/pruning.txt" if PRUNING else "/tmp/noPruning.txt"
 while 1:
     # See: https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list, for explanations
     # about this line.
+    TMP = []
+    Wb = {}
     TMP = list(G)
+    Wb = dict(W)
     # Write logs about exec time
     fp = open(f,'a+')
 
@@ -87,8 +89,8 @@ while 1:
 
     Qmax = []
     start_time = timeit.default_timer()
-    print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
-    # print "[*] New Maximal Tree >", kruskal.kruskal(TMP,W)
+    # #print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
+    print "[*] New Maximal Spanning Tree >", kruskal.kruskal(TMP,Wb)
     # Calculates execution time
     elapsed = timeit.default_timer() - start_time
 
