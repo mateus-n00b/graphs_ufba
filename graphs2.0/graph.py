@@ -26,7 +26,8 @@ class Graph(object):
             v = random.randint(0,len(self.G)-1)
             u = random.randint(0,len(self.G)-1)
             rand = random.randint(0,4)
-            if rand == 1:
+            # De acordo com Iury
+            if rand == 1 or rand == 3:
                 if (v!=u) and (v not in self.G[u]) and (u not in self.G[v]):
                     self.G[u].append(v)
                     self.random_setWeight(u,v)

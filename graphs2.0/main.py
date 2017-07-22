@@ -11,7 +11,7 @@
 # License GPLv3+
 # TODO: Comment the code
 
-import time
+import time,os
 import timeit
 import random,sys
 
@@ -25,7 +25,7 @@ import show_graph
 #                           GLOBAL VARS
 Q = []
 Qmax = []
-GLENGTH = 25
+GLENGTH = 50
 # Weights
 W = {}
 #                           END VARS
@@ -101,3 +101,4 @@ while cont < 1000:
     cont +=1
     TMP = []
     time.sleep(0.2)
+os.system("killall python")

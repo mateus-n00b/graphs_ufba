@@ -5,6 +5,9 @@
 # Mateus-n00b, July 2017
 #
 #
+import prunning
+from log import *
+
 parent = dict()
 
 def make_set(vertice):
@@ -40,6 +43,8 @@ def kruskal(G,weight):
     # sorts edges in ascending order
     edges.sort()
     # In my case, the list will be sorted in descending order (edges.reverse)
+    # logging_kruskal(G,weight)
+    logging(G,[])
 
     for edge in edges:
         weight, u, v = edge
@@ -62,7 +67,7 @@ def run(G,weight):
 
 # input graph
 # Testbed
-
+#
 # G = [
 # [1],
 # [2,6,7],
