@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # This program try to find the maximal-clique in a dynamic graph
-# by using a pruning approach.
+# by using a prunning approach.
 #
 # Authors:
 #          Mateus Sousa (UFBA)
@@ -19,7 +19,7 @@ import random,sys
 import kruskal
 import maximal
 import graph
-import pruning
+import prunning
 import show_graph
 
 #                           GLOBAL VARS
@@ -62,19 +62,19 @@ show = show_graph.Show(G,Qmax)
 # show.run()
 
 
-# Using PRUNING?
-PRUNING = False
+# Using prunning?
+prunning = False
 if len(sys.argv) > 1:
-    PRUNING = True
-    print "\tUsing PRUNING approach\n"
+    prunning = True
+    print "\tUsing prunning approach\n"
 else:
-    print "\tRunning without PRUNING approach\n"
-    print "python2.7 {0} <1> - enable PRUNING\n".format(sys.argv[0])
+    print "\tRunning without prunning approach\n"
+    print "python2.7 {0} <1> - enable prunning\n".format(sys.argv[0])
 
 # Enable time tracing
-f =  "/tmp/pruning.txt" if PRUNING else "/tmp/noPruning.txt"
-
-while 1:
+f =  "/tmp/prunning.txt" if prunning else "/tmp/noprunning.txt"
+cont = 0
+while cont < 1000:
     # See: https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list, for explanations
     # about this line.
     TMP = []
@@ -84,8 +84,8 @@ while 1:
     # Write logs about exec time
     fp = open(f,'a+')
 
-    if PRUNING:
-        TMP = pruning.pruning(TMP)
+    if prunning:
+        TMP = prunning.prunning(TMP)
 
     Qmax = []
     start_time = timeit.default_timer()
@@ -98,5 +98,6 @@ while 1:
     fp.write(str(elapsed)+'\n')
     fp.close()
 
+    cont +=1
     TMP = []
-    time.sleep(2)
+    time.sleep(0.2)
