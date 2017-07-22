@@ -4,7 +4,7 @@
 #
 # Mateus-n00b, July 2017
 #
-# 
+#
 parent = dict()
 
 def make_set(vertice):
@@ -39,6 +39,8 @@ def kruskal(G,weight):
     edges = list(graph['E'])
     # sorts edges in ascending order
     edges.sort()
+    # In my case, the list will be sorted in descending order (edges.reverse)
+
     for edge in edges:
         weight, u, v = edge
         # checks if current edge do not close cycle
@@ -59,33 +61,26 @@ def run(G,weight):
     return graph
 
 # input graph
-# graph = {
-#         'V': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-#         'E': set([
-#             (2, '1', '2'),
-#             (2, '1', '3'),
-#             (2, '2', '3'),
-#             (1, '2', '6'),
-#             (1, '3', '4'),
-#             (5, '4', '6'),
-#             (4, '6', '7'),
-#             (7, '4', '5'),
-#             (6, '7', '5'),
-#             (1, '4', '10'),
-#             (2, '5', '10'),
-#             (8, '5', '8'),
-#             (2, '5', '9'),
-#             (3, '8', '9'),
-#             ])
-#         }
+# Testbed
+
+# G = [
+# [1],
+# [2,6,7],
+# [7,3,8],
+# [8,4],
+# [],
+# [6],
+# [7],
+# [8],
+# [3,9],
+# []
+# ]
 #
-# mst = kruskal(graph)
-# print("Minimal Spanning Tree:")
-# print(mst)
-# mst_weight = 0
-# for edge in mst:
-#     weight, u, v = edge
-#     mst_weight += weight
+# W = {}
 #
-# print("Cost: ")
-# print(mst_weight)
+# for i in range(0,len(G)):
+#     W[i] = {}
+#     for j in G[i]:
+#         W[i][j] = float(raw_input("(%d,%d)> " % (i,j) ))
+# # The output must contain: (0,1), (1,2), (1,6),(2,3),(2,7), (3,4),(3,8), (5,6), (8,9)
+# print kruskal(G,W)
