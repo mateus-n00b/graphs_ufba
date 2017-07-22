@@ -27,7 +27,7 @@ class Graph(object):
             u = random.randint(0,len(self.G)-1)
             rand = random.randint(0,4)
             if rand == 1:
-                if v!=u and v not in self.G[u]:
+                if (v!=u) and (v not in self.G[u]) and (u not in self.G[v]):
                     self.G[u].append(v)
                     self.random_setWeight(u,v)
                     print "[+] Edge %d-%d added!" % (u,v)
