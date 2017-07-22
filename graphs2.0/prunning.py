@@ -1,6 +1,6 @@
 import math
-#                                       BEGIN PRUNING
-def pruning(G):
+#                                       BEGIN prunning
+def prunning(G):
     TMP = G
     # Holds the average degree of all nodes
     medium_degree = 0.0
@@ -20,4 +20,4 @@ def pruning(G):
                 # Remove Vertice to easy the Maximal-Clique computation
                 TMP[i] = []
     return TMP
-#                                       END PRUNING
+#                                       END prunning
