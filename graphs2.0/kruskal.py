@@ -5,7 +5,7 @@
 # Mateus-n00b, July 2017
 #
 #
-import prunning
+import pruning
 from log import *
 
 parent = dict()

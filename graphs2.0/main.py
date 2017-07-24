@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # This program try to find the maximal-clique in a dynamic graph
-# by using a prunning approach.
+# by using a pruning approach.
 #
 # Authors:
 #          Mateus Sousa (UFBA)
@@ -19,7 +19,7 @@ import random,sys
 import kruskal
 import maximal
 import graph
-import prunning
+import pruning
 import show_graph
 
 #                           GLOBAL VARS
@@ -62,17 +62,17 @@ show = show_graph.Show(G,Qmax)
 # show.run()
 
 
-# Using prunning?
-PRUNNING = False
+# Using pruning?
+PRUNING = False
 if len(sys.argv) > 1:
-    PRUNNING = True
-    print "\tUsing prunning approach\n"
+    PRUNING = True
+    print "\tUsing pruning approach\n"
 else:
-    print "\tRunning without prunning approach\n"
-    print "python2.7 {0} <1> - enable prunning\n".format(sys.argv[0])
+    print "\tRunning without pruning approach\n"
+    print "python2.7 {0} <1> - enable pruning\n".format(sys.argv[0])
 
 # Enable time tracing
-f =  "/tmp/prunning.txt" if PRUNNING  else "/tmp/noprunning.txt"
+f =  "/tmp/pruning.txt" if PRUNING  else "/tmp/nopruning.txt"
 cont = 0
 while cont < 1000:
     # See: https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list, for explanations
@@ -84,8 +84,8 @@ while cont < 1000:
     # Write logs about exec time
     fp = open(f,'a+')
 
-    if PRUNNING:
-        TMP = prunning.prunning(TMP)
+    if PRUNING:
+        TMP = pruning.pruning(TMP)
 
     Qmax = []
     start_time = timeit.default_timer()
