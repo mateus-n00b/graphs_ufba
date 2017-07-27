@@ -32,8 +32,8 @@ def union(u, v, edges):
             parent[ancestor1] = ancestor2
 
 
-def kruskal(G,weight):
-    graph = run(G,weight)
+def kruskal(G,W):
+    graph = run(G,W)
     mst = set()
     # puts all the vertices in seperate sets
     for vertice in graph['V']:
@@ -52,6 +52,8 @@ def kruskal(G,weight):
         if find_set(u) != find_set(v):
             mst.add(edge)
             union(u, v, edges)
+
+
 
     return mst
 
@@ -77,15 +79,21 @@ def run(G,weight):
 # [6],
 # [7],
 # [8],
-# [3,9],
+# [9],
 # []
 # ]
 #
-# W = {}
-#
+# # Uncomment this to test the alg.
+# W = {0: {1: 10.0}, 1: {2: 10.0, 6: 8.0, 7: 13.0},
+# 2: {8: 13.0, 3: 10.0, 7: 8.0}, 3: {8: 8.0, 4: 10.0},
+# 4: {}, 5: {6: 10.0}, 6: {7: 10.0}, 7: {8: 10.0},
+# 8: {9: 10.0}, 9: {}}
+# print kruskal(G,W)
+
+
+# Do not uncomment this part, it just read the weights
 # for i in range(0,len(G)):
 #     W[i] = {}
 #     for j in G[i]:
 #         W[i][j] = float(raw_input("(%d,%d)> " % (i,j) ))
-# # The output must contain: (0,1), (1,2), (1,6),(2,3),(2,7), (3,4),(3,8), (5,6), (8,9)
-# print kruskal(G,W)
+# The output must contain: (0,1), (1,2), (1,6),(2,3),(2,7), (3,4),(3,8), (5,6), (8,9)
