@@ -26,10 +26,14 @@ def find_set(vertice):
 def union(u, v, edges):
     ancestor1 = find_set(u)
     ancestor2 = find_set(v)
+    # print ancestor1,ancestor2
+
     # if u and v are not connected by a path
     if ancestor1 != ancestor2:
-        for edge in edges:
+        # Not necessary
+        # for edge in edges:
             parent[ancestor1] = ancestor2
+            print parent[ancestor1],
 
 
 def kruskal(G,W):
@@ -52,8 +56,6 @@ def kruskal(G,W):
         if find_set(u) != find_set(v):
             mst.add(edge)
             union(u, v, edges)
-
-
 
     return mst
 
@@ -82,7 +84,7 @@ def run(G,weight):
 # [9],
 # []
 # ]
-#
+
 # # Uncomment this to test the alg.
 # W = {0: {1: 10.0}, 1: {2: 10.0, 6: 8.0, 7: 13.0},
 # 2: {8: 13.0, 3: 10.0, 7: 8.0}, 3: {8: 8.0, 4: 10.0},
