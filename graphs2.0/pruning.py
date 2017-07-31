@@ -1,7 +1,27 @@
 import math
 #                                       BEGIN prunning
+def edge_prunning(G,W):
+    TMP = list(G)
+    medium_weigth = 0.0
+    cont = 0.0
+
+    for u in range(0,len(TMP)):
+        for v in G[u]:
+            cont+=1.0
+            medium_weigth += W[u][v]
+
+    medium_weigth/=cont
+    if medium_weigth > 1.0:
+        for u in range(0,len(TMP)):
+            for v in G[u]:
+                if W[u][v] < medium_weigth:
+                    TMP[u].remove(v)
+                    # print "Edge (%d,%d) removed!" % (u,v)
+    return TMP
+
+
 def prunning(G):
-    TMP = G
+    TMP = list(G)
     # Holds the average degree of all nodes
     medium_degree = 0.0
     # Number of vertices
