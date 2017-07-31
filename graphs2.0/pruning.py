@@ -7,7 +7,9 @@ def edge_prunning(G,W):
 
     for u in range(0,len(TMP)):
         for v in G[u]:
+            # total of edges
             cont+=1.0
+            # average weigth of the edges
             medium_weigth += W[u][v]
 
     medium_weigth/=cont
