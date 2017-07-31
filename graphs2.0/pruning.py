@@ -1,6 +1,6 @@
 import math
 #                                       BEGIN prunning
-def edge_prunning(G,W):
+def edge_pruning(G,W):
     TMP = list(G)
     medium_weigth = 0.0
     cont = 0.0
@@ -22,7 +22,7 @@ def edge_prunning(G,W):
     return TMP
 
 
-def prunning(G):
+def pruning(G):
     TMP = list(G)
     # Holds the average degree of all nodes
     medium_degree = 0.0
