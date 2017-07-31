@@ -13,7 +13,7 @@ class Graph(object):
     # Use esta funcao, juntamente com a fixGraph, para preencher a lista de adjacencia corretamente.
     # Errei na construcao da lista de adjacencia pois estava criando um grafo orientado :/ onde o ultimo no.
     # estava em um beco sem saida.
-    def fixW(W,G):
+    def fixW(self,W,G):
         for i in range(0,len(G)):
             for j in G[i]:
                 if not W[i].has_key(j):
