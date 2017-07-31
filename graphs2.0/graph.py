@@ -9,6 +9,16 @@ class Graph(object):
         self.G = G
         self.W = W
 
+
+    # NOTE: I have been using a Directed Graph.
+    # Use this function to fix it.
+    def fixGraph(self,graph):
+        for i in range(0,len(graph)):
+            for j in graph[i]:
+                if i not in graph[j]:
+                    graph[j].append(i)
+        return graph
+
     # Adds random Weights to the edges
     def random_setWeight(self,u,v):
         w = random.random()*10
