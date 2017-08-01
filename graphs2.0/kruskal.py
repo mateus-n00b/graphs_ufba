@@ -32,8 +32,7 @@ def union(u, v, edges):
     if ancestor1 != ancestor2:
         # Not necessary
         # for edge in edges:
-            parent[ancestor1] = ancestor2
-            print parent[ancestor1],
+            parent[ancestor1] = ancestor2            
 
 
 def kruskal(G,W):
