@@ -74,8 +74,8 @@ else:
 
 # Enable time tracing
 f =  "/tmp/pruning.txt" if PRUNING  else "/tmp/nopruning.txt"
-cont = 0
-while cont < 1000:
+
+for i in range(1000):
     # See: https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list, for explanations
     # about this line.
     TMP = []
@@ -85,11 +85,12 @@ while cont < 1000:
     # Write logs about exec time
     fp = open(f,'a+')
 
+    # pruning?
     if PRUNING:
         TMP = pruning.pruning(TMP)
         TMP = pruning.edge_pruning(TMP,Wb)
 
-    Qmax = []
+    Qmax = []      # To Calculate Max clique
     start_time = timeit.default_timer()
     # #print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
     print "[*] New Maximal Spanning Tree >", kruskal.kruskal(TMP,Wb)
@@ -100,7 +101,6 @@ while cont < 1000:
     fp.write(str(elapsed)+'\n')
     fp.close()
 
-    cont +=1
     TMP = []
     time.sleep(0.2)
 os.system("killall python")
