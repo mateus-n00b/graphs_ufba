@@ -55,6 +55,7 @@ for i in range(0,len(G)):
 
 #                                       Starting
 H = graph.Graph(G,GLENGTH,W)
+H.fixGraph()
 H.run()
 mc = maximal.MC(Qmax)
 show = show_graph.Show(G,Qmax)

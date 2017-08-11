@@ -13,21 +13,20 @@ class Graph(object):
     # Use esta funcao, juntamente com a fixGraph, para preencher a lista de adjacencia corretamente.
     # Errei na construcao da lista de adjacencia pois estava criando um grafo orientado :/ onde o ultimo no.
     # estava em um beco sem saida.
-    def fixW(self,W,G):
-        for i in range(0,len(G)):
-            for j in G[i]:
-                if not W[i].has_key(j):
-                    W[i][j] = W[j][i]
-        return W
+    def fixW(self):
+        for i in range(0,len(self.G)):
+            for j in self.G[i]:
+                if not self.W[i].has_key(j):
+                    self.W[i][j] = self.W[j][i]
 
     # NOTE: I have been using a Directed Graph.
     # Use this function to fix it.
-    def fixGraph(self,graph):
-        for i in range(0,len(graph)):
-            for j in graph[i]:
-                if i not in graph[j]:
-                    graph[j].append(i)
-        return graph
+    def fixGraph(self):
+        for i in range(0,len(self.G)):
+            for j in self.G[i]:
+                if i not in self.G[j]:
+                    self.G[j].append(i)
+        self.fixW()
 
     # Adds random Weights to the edges
     def random_setWeight(self,u,v):
