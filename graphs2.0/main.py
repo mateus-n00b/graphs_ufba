@@ -87,6 +87,7 @@ while cont < 1000:
 
     if PRUNING:
         TMP = pruning.pruning(TMP)
+        TMP = pruning.edge_pruning(TMP,Wb)
 
     Qmax = []
     start_time = timeit.default_timer()

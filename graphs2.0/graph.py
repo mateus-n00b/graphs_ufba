@@ -33,10 +33,11 @@ class Graph(object):
         w = random.random()*10
         if not self.W.has_key(u):
             self.W[u] = {}
-            self.W[u][v] = w
-        else:
-            self.W[u][v] = w
+        elif not self.W.has_key(v):
+            self.W[v] = {}
 
+        self.W[u][v] = w
+        self.W[v][u] = w
         print "[++] Weight added to (%d-%d)" % (u,v)
 
     # Adds edges in a random way
@@ -49,14 +50,17 @@ class Graph(object):
             if rand == 1 or rand == 3:
                 if (v!=u) and (v not in self.G[u]) and (u not in self.G[v]):
                     self.G[u].append(v)
+                    self.G[v].append(u)
                     self.random_setWeight(u,v)
-                    print "[+] Edge %d-%d added!" % (u,v)
+                    print "[ADDITION-EDGE] Edge %d-%d added!" % (u,v)
 
             elif rand == 2:
                 if v!=u and v in self.G[u]:
                     self.G[u].remove(v)
+                    self.G[v].remove(u)
                     self.W[u].__delitem__(v)
-                    print "[-] Edge %d-%d deleted!" % (u,v)
+                    self.W[v].__delitem__(u)
+                    print "[DELETION-EDGE] Edge %d-%d deleted!" % (u,v)
 
             time.sleep(random.random())
 
@@ -66,12 +70,12 @@ class Graph(object):
                 rand = random.randint(0,4)
                 if  rand == 1:
                     self.G.append([])
-                    print "[*] Vertice %d added" % len(self.G)
+                    print "[ADDITION-VERTICE] Vertice %d added" % len(self.G)
 
                 elif rand == 2:
                     v = random.randint(0,len(self.G)-1)
                     self.G[v] = []
-                    print "[!] Vertice %d deleted!" % (v)
+                    print "[DELETION-VERTICE] Vertice %d deleted!" % (v)
                 time.sleep(random.random())
 
     def run(self):

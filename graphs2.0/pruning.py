@@ -18,6 +18,7 @@ def edge_pruning(G,W):
             for v in G[u]:
                 if W[u][v] < medium_weigth:
                     TMP[u].remove(v)
+                    TMP[v].remove(u)
                     # print "Edge (%d,%d) removed!" % (u,v)
     return TMP
 
