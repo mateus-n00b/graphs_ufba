@@ -72,11 +72,11 @@ PRUNING = False
 if len(sys.argv) > 1:
     PRUNING = True
     print "\tUsing pruning approach\n"
-    gl_algo = naive_kruskal
+    gl_algo = my_kruskal
 else:
     print "\tRunning without pruning approach\n"
     print "python2.7 {0} <1> - enable pruning\n".format(sys.argv[0])
-    gl_algo = my_kruskal
+    gl_algo = naive_kruskal
 
 def main():
     global gl_algo

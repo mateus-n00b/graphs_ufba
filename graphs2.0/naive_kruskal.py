@@ -34,10 +34,6 @@ def union(u, v, edges):
         # for edge in edges:
             parent[ancestor1] = ancestor2
 
-def isBetterThan(u,v,currentMST):
-    for e in currentMST:
-        print e
-
 def kruskal(G,W):
     graph = run(G,W)
     mst = set()
@@ -58,9 +54,6 @@ def kruskal(G,W):
         if find_set(u) != find_set(v):
             mst.add(edge)
             union(u, v, edges)
-        else:
-            pass
-
     return mst
 
 def run(G,weight):
