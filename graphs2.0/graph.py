@@ -33,12 +33,12 @@ class Graph(object):
         w = random.random()*10
         if not self.W.has_key(u):
             self.W[u] = {}
-        elif not self.W.has_key(v):
+        if not self.W.has_key(v):
             self.W[v] = {}
 
         self.W[u][v] = w
         self.W[v][u] = w
-        print "[++] Weight added to (%d-%d)" % (u,v)
+        print "[WEIGHT] Weight added to (%d-%d)" % (u,v)
 
     # Adds edges in a random way
     def random_edges(self):
@@ -55,7 +55,7 @@ class Graph(object):
                     print "[ADDITION-EDGE] Edge %d-%d added!" % (u,v)
 
             elif rand == 2:
-                if v!=u and v in self.G[u]:
+                if v!=u and v in self.G[u] and u in self.G[v]:
                     self.G[u].remove(v)
                     self.G[v].remove(u)
                     self.W[u].__delitem__(v)

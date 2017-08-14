@@ -35,15 +35,20 @@ def union(u, v, edges):
         # for edge in edges:
             parent[ancestor1] = ancestor2
 
+# Perform the decision making to verify if the current edge
+# have a weight greater than any edge already in the mst
 def isBetterThan(G,u,v,currentMST):
     cycle = find_cycle_mst(G,int(u),int(v),currentMST)
-    print u,v,cycle
-    # for e in currentMST:
-    #     print e
+    # print u,v,cycle
+    # TODO: Finish this impl
+    # for c in cycle:
+    #     if u in c:
+    #         print "Loading..."
 
 def kruskal(G,W):
-    graph = run(G,W)
+    graph = run(G,W) # Turn a list into a list of tuples
     mst = set()
+    memo = set() # Records what edges were visited
     # puts all the vertices in seperate sets
     for vertice in graph['V']:
         make_set(vertice)
@@ -57,14 +62,16 @@ def kruskal(G,W):
 
     for edge in edges:
         weight, u, v = edge
-        # checks if current edge do not close cycle
-        if find_set(u) != find_set(v):
-            mst.add(edge)
-            union(u, v, edges)
-        else:
-            if not mst.__contains__((weight,v,u)):
-                isBetterThan(G,u,v,mst)
+        if not memo.__contains__((u,v)) and not memo.__contains__((v,u)):
+            # checks if current edge do not close cycle
+            if find_set(u) != find_set(v):
+                mst.add(edge)
+                union(u, v, edges)
+                memo.add((u,v))
 
+            else:
+                if not mst.__contains__((weight,v,u)):
+                       isBetterThan(G,u,v,mst)
     return mst
 
 def run(G,weight):
@@ -73,8 +80,11 @@ def run(G,weight):
     graph['V'] = [str(i) for i in range(0,len(G))]
     for i in range(0,len(G)):
         for j in G[i]:
-            conj.add((weight[i][j],str(i),str(j)))
-            conj.add((weight[j][i],str(j),str(i)))
+            try:
+                conj.add((weight[i][j],str(i),str(j)))
+                conj.add((weight[j][i],str(j),str(i)))
+            except:
+                pass
     graph['E'] = conj
     return graph
 
@@ -98,10 +108,9 @@ def run(G,weight):
 # 2: {8: 13.0, 1: 10.0, 3: 10.0, 7: 8.0},
 # 3: {8: 8.0, 2: 10.0, 4: 10.0}, 4: {3: 10.0}, 5: {6: 10.0}, 6: {1: 8.0, 5: 10.0, 7: 10.0},
 # 7: {8: 10.0, 1: 13.0, 2: 8.0, 6: 10.0}, 8: {9: 10.0, 2: 13.0, 3: 8.0, 7: 10.0}, 9: {8: 10.0}}
-#
-# print kruskal(G,W)
-
-
+# #
+# print "Your output:",[ (i,j) for w,i,j in kruskal(G,W) ]
+# print "Correct output is: (0,1), (1,2), (1,6),(2,3),(2,7), (3,4),(3,8), (5,6), (8,9)"
 # Do not uncomment this part, it just read the weights
 # for i in range(0,len(G)):
 #     W[i] = {}

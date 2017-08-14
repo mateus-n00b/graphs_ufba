@@ -28,9 +28,11 @@ import show_graph
 Q = []
 Qmax = []
 GLENGTH = 75
+PRUNING = False
+gl_algo = object
+
 # Weights
 W = {}
-gl_algo = object
 #                           END VARS
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -39,27 +41,35 @@ gl_algo = object
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 G = [
-[1,3],
-[2,3,4,5],
-[4],
-[0,1,5],
-[1,2,5],
-[1,3,4],
+[1],
+[0, 2, 6, 7],
+[1, 3, 7, 8],
+[2, 4, 8],
+[3],
+[6],
+[5, 1, 7],
+[6, 2, 1, 8],
+[2, 7, 9, 3],
+[8]
 ]
 
 # Set initial Weights
-for i in range(0,len(G)):
-    W[i] = {}
-    for j in G[i]:
-        W[i][j] = random.randint(0,100)
+W = {0: {1: 10.0}, 1: {0: 10.0, 2: 10.0, 6: 8.0, 7: 13.0},
+2: {8: 13.0, 1: 10.0, 3: 10.0, 7: 8.0},
+3: {8: 8.0, 2: 10.0, 4: 10.0},
+4: {3: 10.0},
+5: {6: 10.0},
+6: {1: 8.0, 5: 10.0, 7: 10.0},
+7: {8: 10.0, 1: 13.0, 2: 8.0, 6: 10.0},
+8: {9: 10.0, 2: 13.0, 3: 8.0, 7: 10.0},
+9: {8: 10.0}}
 
 # - - - - - - - - - - - - - - - - - - - -
 #                                      END GRAPHS
 
 #                                       Starting
 H = graph.Graph(G,GLENGTH,W)
-H.fixGraph()
-print G
+# H.fixGraph() To fix my sins 
 H.run()
 mc = maximal.MC(Qmax)
 show = show_graph.Show(G,Qmax)
@@ -68,7 +78,6 @@ show = show_graph.Show(G,Qmax)
 
 
 # Using pruning?
-PRUNING = False
 if len(sys.argv) > 1:
     PRUNING = True
     print "\tUsing pruning approach\n"
@@ -103,7 +112,7 @@ def main():
         Qmax = []      # To Calculate Max clique
         start_time = timeit.default_timer()
         # #print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
-        print "[*] New Maximal Spanning Tree >", gl_algo.kruskal(TMP,Wb)
+        print "[INFO] MST >", gl_algo.kruskal(TMP,Wb)
         # Calculates execution time
         elapsed = timeit.default_timer() - start_time
 
@@ -113,6 +122,8 @@ def main():
         TMP = []
         time.sleep(0.2)
     fp.close()
+    # TODO: Find out how to kill a Thread
+    # Kill the Thread :(
     os.system("killall python")
 
 
