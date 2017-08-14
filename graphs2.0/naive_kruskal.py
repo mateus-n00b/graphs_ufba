@@ -1,10 +1,10 @@
-# Copied from some link on github (put here later)
-#
-# I modified some part (run function)
-#
+# Based on Cormen's MST algorithm
+# Naive-Kruskal with disjoint-set impl
 # Mateus-n00b, July 2017
+# Iury Maia
+# License GPLv3
 #
-#
+# ////////////////////////////////////////////////////////////////////////////////////////////////////
 import pruning
 from log import *
 

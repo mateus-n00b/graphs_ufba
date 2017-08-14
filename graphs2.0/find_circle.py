@@ -1,3 +1,10 @@
+# This function allows to find the edges inside the cycle
+#
+# Mateus-n00b (UFBA), August 2017
+#
+#
+# License GPLv3
+# ////////////////////////////////////////////////////////////////////////////////////////////////////
 import networkx as nx
 
 def find_cycle_mst(H,u,v,mst):

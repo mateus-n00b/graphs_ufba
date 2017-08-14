@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # This program try to find the maximal-clique in a dynamic graph
-# by using a pruning approach.
+# by using a pruning approach and a MST as well.
 #
 # Authors:
 #          Mateus Sousa (UFBA)
@@ -10,13 +10,15 @@
 # Now it is modular
 # License GPLv3+
 # TODO: Comment the code
+# ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import time,os
 import timeit
 import random,sys
 
 # My imports
-import kruskal
+import naive_kruskal
+import my_kruskal
 import maximal
 import graph
 import pruning
@@ -28,6 +30,7 @@ Qmax = []
 GLENGTH = 75
 # Weights
 W = {}
+gl_algo = object
 #                           END VARS
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -69,11 +72,16 @@ PRUNING = False
 if len(sys.argv) > 1:
     PRUNING = True
     print "\tUsing pruning approach\n"
+    gl_algo = naive_kruskal
 else:
     print "\tRunning without pruning approach\n"
     print "python2.7 {0} <1> - enable pruning\n".format(sys.argv[0])
+    gl_algo = my_kruskal
 
 def main():
+    global gl_algo
+    global PRUNING
+
     # Enable time tracing
     f =  "/tmp/pruning.txt" if PRUNING  else "/tmp/nopruning.txt"
     # Write logs about exec time
@@ -95,7 +103,7 @@ def main():
         Qmax = []      # To Calculate Max clique
         start_time = timeit.default_timer()
         # #print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
-        print "[*] New Maximal Spanning Tree >", kruskal.kruskal(TMP,Wb)
+        print "[*] New Maximal Spanning Tree >", gl_algo.kruskal(TMP,Wb)
         # Calculates execution time
         elapsed = timeit.default_timer() - start_time
 
