@@ -56,6 +56,7 @@ for i in range(0,len(G)):
 #                                       Starting
 H = graph.Graph(G,GLENGTH,W)
 H.fixGraph()
+print G
 H.run()
 mc = maximal.MC(Qmax)
 show = show_graph.Show(G,Qmax)
@@ -72,35 +73,40 @@ else:
     print "\tRunning without pruning approach\n"
     print "python2.7 {0} <1> - enable pruning\n".format(sys.argv[0])
 
-# Enable time tracing
-f =  "/tmp/pruning.txt" if PRUNING  else "/tmp/nopruning.txt"
-
-for i in range(1000):
-    # See: https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list, for explanations
-    # about this line.
-    TMP = []
-    Wb = {}
-    TMP = list(G)
-    Wb = dict(W)
+def main():
+    # Enable time tracing
+    f =  "/tmp/pruning.txt" if PRUNING  else "/tmp/nopruning.txt"
     # Write logs about exec time
     fp = open(f,'a+')
 
-    # pruning?
-    if PRUNING:
-        TMP = pruning.pruning(TMP)
-        TMP = pruning.edge_pruning(TMP,Wb)
+    for i in range(1000):
+        # See: https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list, for explanations
+        # about this line.
+        TMP = []
+        Wb = {}
+        TMP = list(G)
+        Wb = dict(W)
 
-    Qmax = []      # To Calculate Max clique
-    start_time = timeit.default_timer()
-    # #print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
-    print "[*] New Maximal Spanning Tree >", kruskal.kruskal(TMP,Wb)
-    # Calculates execution time
-    elapsed = timeit.default_timer() - start_time
+        # pruning?
+        if PRUNING:
+            TMP = pruning.pruning(TMP)
+            TMP = pruning.edge_pruning(TMP,Wb)
 
-    # Tracing
-    fp.write(str(elapsed)+'\n')
+        Qmax = []      # To Calculate Max clique
+        start_time = timeit.default_timer()
+        # #print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
+        print "[*] New Maximal Spanning Tree >", kruskal.kruskal(TMP,Wb)
+        # Calculates execution time
+        elapsed = timeit.default_timer() - start_time
+
+        # Tracing
+        fp.write(str(elapsed)+'\n')
+
+        TMP = []
+        time.sleep(0.2)
     fp.close()
+    os.system("killall python")
 
-    TMP = []
-    time.sleep(0.2)
-os.system("killall python")
+
+if __name__ == '__main__':
+    main()

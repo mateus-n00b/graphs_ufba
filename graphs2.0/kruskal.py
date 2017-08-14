@@ -34,6 +34,9 @@ def union(u, v, edges):
         # for edge in edges:
             parent[ancestor1] = ancestor2
 
+def isBetterThan(u,v,currentMST):
+    for e in currentMST:
+        print e
 
 def kruskal(G,W):
     graph = run(G,W)
