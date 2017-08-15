@@ -8,24 +8,22 @@ def edge_pruning(G,W):
     for u in range(0,len(TMP)):
         for v in G[u]:
             # total of edges
-            try:
-                cont+=1.0
-                # average weigth of the edges
-                medium_weigth += W[u][v]
-            except:
-                pass
-                
+            cont+=1.0
+            # average weigth of the edges
+            medium_weigth += W[u][v]
+
     medium_weigth/=cont
     if medium_weigth > 1.0:
         for u in range(0,len(TMP)):
-            for v in G[u]:
-                try:
-                    if W[u][v] < medium_weigth:
-                        W[u].__delitem__(v)
-                        W[v].__delitem__(u)
-                        # print "Edge (%d,%d) removed!" % (u,v)
-                except:
-                    pass
+            for v in TMP[u]:
+                if W[u][v] < medium_weigth:
+                    W[u].__delitem__(v)
+                    W[v].__delitem__(u)
+                    # NOTE: I fix this line because I found a error on it
+                    # I've been just removing the Weights and not the edges
+                    TMP[u].remove(v)
+                    TMP[v].remove(u)
+                    # print "Edge (%d,%d) removed!" % (u,v)
     return TMP
 
 
