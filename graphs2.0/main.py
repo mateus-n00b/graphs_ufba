@@ -54,7 +54,9 @@ G = [
 ]
 
 # Set initial Weights
-W = {0: {1: 10.0}, 1: {0: 10.0, 2: 10.0, 6: 8.0, 7: 13.0},
+W = {
+0: {1: 10.0},
+1: {0: 10.0, 2: 10.0, 6: 8.0, 7: 13.0},
 2: {8: 13.0, 1: 10.0, 3: 10.0, 7: 8.0},
 3: {8: 8.0, 2: 10.0, 4: 10.0},
 4: {3: 10.0},
@@ -69,7 +71,7 @@ W = {0: {1: 10.0}, 1: {0: 10.0, 2: 10.0, 6: 8.0, 7: 13.0},
 
 #                                       Starting
 H = graph.Graph(G,GLENGTH,W)
-# H.fixGraph() To fix my sins 
+# H.fixGraph() To fix my sins
 H.run()
 mc = maximal.MC(Qmax)
 show = show_graph.Show(G,Qmax)
@@ -99,19 +101,18 @@ def main():
     for i in range(1000):
         # See: https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list, for explanations
         # about this line.
+        # pruning?
         TMP = []
         Wb = {}
         TMP = list(G)
         Wb = dict(W)
 
-        # pruning?
         if PRUNING:
-            TMP = pruning.pruning(TMP)
-            TMP = pruning.edge_pruning(TMP,Wb)
+            TMP,Wb = pruning.edge_pruning(TMP,Wb)
+            TMP,Wb = pruning.pruning(TMP,Wb)
 
         Qmax = []      # To Calculate Max clique
         start_time = timeit.default_timer()
-        # #print "[*] New Maximal clique is ", mc.basicMC(TMP,Qmax)
         print "[INFO] MST >", gl_algo.kruskal(TMP,Wb)
         # Calculates execution time
         elapsed = timeit.default_timer() - start_time
@@ -119,7 +120,6 @@ def main():
         # Tracing
         fp.write(str(elapsed)+'\n')
 
-        TMP = []
         time.sleep(0.2)
     fp.close()
     # TODO: Find out how to kill a Thread

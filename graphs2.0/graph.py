@@ -3,13 +3,14 @@ import timeit
 import random,sys
 from threading import Thread
 
+# Set a seed to be 'equals' to all cases
+random.seed(a=1000)
+
 class Graph(object):
     def __init__(self,G,GLENGTH,W):
         self.GLENGTH = GLENGTH
         self.G = G
         self.W = W
-
-
     # Use esta funcao, juntamente com a fixGraph, para preencher a lista de adjacencia corretamente.
     # Errei na construcao da lista de adjacencia pois estava criando um grafo orientado :/ onde o ultimo no.
     # estava em um beco sem saida.
@@ -30,9 +31,10 @@ class Graph(object):
 
     # Adds random Weights to the edges
     def random_setWeight(self,u,v):
-        w = random.random()*10
+        w = int(random.random()*10)
         if not self.W.has_key(u):
             self.W[u] = {}
+
         if not self.W.has_key(v):
             self.W[v] = {}
 
@@ -61,7 +63,6 @@ class Graph(object):
                     self.W[u].__delitem__(v)
                     self.W[v].__delitem__(u)
                     print "[DELETION-EDGE] Edge %d-%d deleted!" % (u,v)
-
             time.sleep(random.random())
 
     def random_vertices(self):
@@ -70,12 +71,21 @@ class Graph(object):
                 rand = random.randint(0,4)
                 if  rand == 1:
                     self.G.append([])
-                    print "[ADDITION-VERTICE] Vertice %d added" % len(self.G)
+                    # Add new entry for the new node
+                    self.W[len(self.G)] = {}
+                    print "[ADDITION-VERTICE] Vertice [%d] added" % len(self.G)
 
                 elif rand == 2:
                     v = random.randint(0,len(self.G)-1)
+                    # To delete every connection with 'v'
+                    for e in self.G[v]:
+                        if self.W[e].has_key(v):
+                            self.W[e].__delitem__(v)
+
+                    self.W[v] = {}
                     self.G[v] = []
-                    print "[DELETION-VERTICE] Vertice %d deleted!" % (v)
+                    print "[DELETION-VERTICE] Vertice [%d] deleted!" % (v)
+
                 time.sleep(random.random())
 
     def run(self):
