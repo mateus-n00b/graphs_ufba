@@ -3,7 +3,7 @@ import timeit
 import random,sys
 from threading import Thread
 
-# Set a seed to be 'equals' to all cases
+# Set a seed to be 'equals' to all executions
 random.seed(a=1000)
 
 class Graph(object):
@@ -31,7 +31,7 @@ class Graph(object):
 
     # Adds random Weights to the edges
     def random_setWeight(self,u,v):
-        w = int(random.random()*10)
+        w = int(random.uniform(0.1,100))
         if not self.W.has_key(u):
             self.W[u] = {}
 
