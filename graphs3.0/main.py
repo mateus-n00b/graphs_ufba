@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # My Final Test from discipline Algorithms and Graphs - August 2017.1 (UFBA)
 #
 # Mateus Sousa (n00b), 2017 (UFBA)

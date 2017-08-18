@@ -31,6 +31,7 @@ class Graph(object):
                 # Move!!!
                 # Return the coordinates of nodes
                 positions = next(mobility_model)
+                self.POS = positions
 
                 for j in range(i+1,MAX_NODES):
                     # Vertices positions
@@ -51,26 +52,32 @@ class Graph(object):
 
                         W[i][j] = distUV
                         W[j][i] = distUV
-                        self._LOG_("Edge (%d,%d) added!" %(i,j))
+                        self._LOG_("Edge (%d <- %f -> %d) added!" %(i,distUV,j))
     # Are all neighbours still in the neighbourhood?
     def Management(self):
-        H = self.G
-        pos = self.POS
         while 1:
-            for u in range(0,H):
-                for v in H[u]:
-                    x = (pos[u][0],pos[u][1])
-                    y = (pos[v][0],pos[v][1])
-                    distUV = distance.euclidean(x,y)
-                    if distUV > self.MAX_RANGE: # Is out of my coverage range?
-                        G[u].remove(v)
-                        G[v].remove(u)
-                        W[u].__delitem__(v)
-                        W[v].__delitem__(u)
-                        self._LOG_("Edge (%d,%d) is down!" %(u,v))
+            H = self.G
+            pos = self.POS
+            if len(pos) > 0:
+                for u in range(0,len(H)):
+                    for v in H[u]:
+                        x = (pos[u][0],pos[u][1])
+                        y = (pos[v][0],pos[v][1])
+                        distUV = distance.euclidean(x,y)
+                        if distUV > self.MAX_RANGE: # Is out of my coverage range?
+                            self.G[u].remove(v)
+                            self.G[v].remove(u)
+                            self.W[u].__delitem__(v)
+                            self.W[v].__delitem__(u)
+                            self._LOG_("Edge (%d<- %f -> %d) is down!" %(u,distUV,v))
+
             time.sleep(0.5)
 
     def Run(self):
-        self.SetPosition(self.G,self.W,self.mobility_model,self.MAX_NODES, self.MAX_RANGE)
-        t = Thread(group=None,target=self.Management,args=())
+        # TODO: How to kill these threads?
+        p = Thread(group=None,target=self.SetPosition,
+        args=(self.G,self.W,self.mobility_model,self.MAX_NODES, self.MAX_RANGE))
+        p.start()
+
+        t = Thread(group=None,target=self.Management)
         t.start()
