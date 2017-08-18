@@ -8,7 +8,7 @@
 # License GPLv3
 
 from pymobility.models.mobility import random_waypoint
-import graph
+from graph import Graph
 
 #                                   Global vars
 MAX_NODES = 4
@@ -20,3 +20,6 @@ W = {}
 
 # Default mobility model
 mob = random_waypoint(MAX_NODES, dimensions=(200, 100), velocity=(0.1, 1.0), wt_max=1.0)
+
+H = Graph(G,W,mob,MAX_NODES,MAX_RANGE)
+H.Run()
