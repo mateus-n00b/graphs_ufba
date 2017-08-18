@@ -68,7 +68,7 @@ class Graph(object):
                             self.G[v].remove(u)
                             self.W[u].__delitem__(v)
                             self.W[v].__delitem__(u)
-                            self._LOG_("Edge (%d<- %f -> %d) is down!" %(u,distUV,v))
+                            self._LOG_("Edge (%d <- %f -> %d) is down!" %(u,distUV,v))
 
             time.sleep(0.5)
 
