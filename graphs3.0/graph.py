@@ -52,6 +52,9 @@ class Graph(object):
                         W[i][j] = distUV
                         W[j][i] = distUV
                         self._LOG_("Edge (%d <- %f -> %d) added!" %(i,distUV,j))
+
+            time.sleep(0.2)
+
     # Are all neighbours still in the neighbourhood?
     def Management(self):
         while 1:
@@ -65,6 +68,7 @@ class Graph(object):
                         distUV = distance.euclidean(x,y)
                         if distUV > self.MAX_RANGE: # Is out of my coverage range?
                             self.G[u].remove(v)
+                            # BUG: Error index 
                             self.G[v].remove(u)
                             self.W[u].__delitem__(v)
                             self.W[v].__delitem__(u)
