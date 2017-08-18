@@ -25,7 +25,6 @@ class Graph(object):
             print "[LOG] {0}".format(msg)
 
     def SetPosition(self,G,W,mobility_model,MAX_NODES,MAX_RANGE):
-        self.verbose = raw_input("Verbose y/n? ") # Verbose?
         while 1:
             for i in range(0,MAX_NODES):
                 # Move!!!
@@ -74,6 +73,8 @@ class Graph(object):
             time.sleep(0.5)
 
     def Run(self):
+        self.verbose = raw_input("Verbose y/n? ") # Verbose?
+
         # TODO: How to kill these threads?
         p = Thread(group=None,target=self.SetPosition,
         args=(self.G,self.W,self.mobility_model,self.MAX_NODES, self.MAX_RANGE))
