@@ -12,14 +12,20 @@ import time
 
 class Graph(object):
     def __init__(self,G,W,mobility_model,MAX_NODES,MAX_RANGE):
-        self.G = G
-        self.W = W
-        self.mobility_model = mobility_model
-        self.MAX_NODES = MAX_NODES
-        self.MAX_RANGE = MAX_RANGE
-        self.POS = []
+        self.G = G # Adj. list
+        self.W = W # Weight list
+        self.mobility_model = mobility_model # mobility_model
+        self.MAX_NODES = MAX_NODES # number of nodes
+        self.MAX_RANGE = MAX_RANGE # max transmition range
+        self.POS = [] # holds the current position of every node
+        self.verbose = None # for print infos
+
+    def _LOG_(self, msg):
+        if "y" in self.verbose.lower():
+            print "[LOG] {0}".format(msg)
 
     def SetPosition(self,G,W,mobility_model,MAX_NODES,MAX_RANGE):
+        self.verbose = raw_input("Verbose y/n? ") # Verbose?
         while 1:
             for i in range(0,MAX_NODES):
                 # Move!!!
@@ -32,7 +38,7 @@ class Graph(object):
                     v = (positions[j][0],positions[j][1])
 
                     distUV = distance.euclidean(u,v)
-                    if distUV <= MAX_RANGE: # Is in my coverage area? If yes, then is my neighbour!
+                    if (distUV <= MAX_RANGE) and (j not in G[i]) and (i not in G[j]): # Is in my coverage area? If yes, then is my neighbour!
                         # Builds the Graph adj. list
                         G[i].append(j)
                         G[j].append(i)
@@ -45,6 +51,7 @@ class Graph(object):
 
                         W[i][j] = distUV
                         W[j][i] = distUV
+                        self._LOG_("Edge (%d,%d) added!" %(i,j))
     # Are all neighbours still in the neighbourhood?
     def Management(self):
         H = self.G
@@ -60,9 +67,8 @@ class Graph(object):
                         G[v].remove(u)
                         W[u].__delitem__(v)
                         W[v].__delitem__(u)
-                        print "[INFO] Link (u,v) is down!"
+                        self._LOG_("Edge (%d,%d) is down!" %(u,v))
             time.sleep(0.5)
-
 
     def Run(self):
         self.SetPosition(self.G,self.W,self.mobility_model,self.MAX_NODES, self.MAX_RANGE)
