@@ -10,6 +10,10 @@ from scipy.spatial import distance
 from threading import Thread
 import time
 
+gl_retx = 0
+gl_droPKT = 0
+
+
 class Graph(object):
     def __init__(self,G,W,mobility_model,MAX_NODES,MAX_RANGE):
         self.G = G # Adj. list
@@ -74,20 +78,36 @@ class Graph(object):
                                 self._LOG_("Edge (%d <- %f -> %d) is down!" %(u,distUV,v))
             time.sleep(0.1)
 
+    # Naive tracer
+    def Tracer(self):
+        global gl_retx
+        global gl_droPKT
+
+        rw = open("/tmp/retx.txt","w")
+        rw.write(str(gl_retx)+"\n")
+        rw.close()
+        rw = open("/tmp/per.txt","w")
+        rw.write(str(gl_droPKT)+"\n")
+        rw.close()
+
     def SendPacket(self,s,ttl,MST):
+        global gl_retx
+        global gl_droPKT
+
         temp = [(int(i),int(j)) for w,i,j in MST ]
         if ttl <= 0:
+            gl_droPKT+=1
             self._LOG_("Packet dropped on %d" % s)
         else:
             ttl-=1
             for u in self.G[s]:
                 if (s,u) not in temp:
+                    gl_retx+=1
                     self.SendPacket(u,ttl,MST)
                 else:
                     self._LOG_("Packet received by %d" % s)
                     break
-
-
+        self.Tracer()
     # May be useful
     def BFS(self,s):
         level = {s:0}
