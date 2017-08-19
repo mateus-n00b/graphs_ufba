@@ -69,9 +69,9 @@ def kruskal(G,W):
             if find_set(u) != find_set(v):
                 mst.add(edge)
                 union(u, v, edges)
-            else:
-                if not mst.__contains__((weight,v,u)):
-                       isBetterThan(G,u,v,mst)
+            # else:
+            #     if not mst.__contains__((weight,v,u)):
+            #            isBetterThan(G,u,v,mst)
 
             memo.add((u,v))
         else:

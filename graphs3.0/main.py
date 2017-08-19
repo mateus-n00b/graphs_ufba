@@ -19,6 +19,8 @@ from graph import Graph
 import naive_kruskal
 import my_kruskal
 import pruning
+from log import *
+
 import time,random
 import timeit
 import os,sys
@@ -27,16 +29,16 @@ import copy # to copy a list
 #                                   Global vars
 MAX_NODES = 25
 MAX_RANGE = 100
-SIM_TIME = 10000
-HOP_COUNT = 6
+SIM_TIME = 4
+HOP_COUNT = 5
 
 #                                  Adj. List and Weights
 G = [ [] for i in range(MAX_NODES)]
 W = {}
 
 #                                  Seeds
-SetSeed(1000) # Set a seed to control the randomicity
-random.seed(1000)
+SetSeed(MAX_NODES) # Set a seed to control the randomicity
+random.seed(MAX_NODES)
 
 # Default mobility model                      X    Y
 mob = random_waypoint(MAX_NODES, dimensions=(1000, 50), velocity=(0.1, 1.0), wt_max=0.8) # check this
@@ -80,14 +82,22 @@ def main():
         T = gl_algo.kruskal(TMP,Wb) # Creates the tree
         # Calculates execution time
         elapsed = timeit.default_timer() - start_time
-        H.SendPacket(random.randint(0,MAX_NODES-1),HOP_COUNT,T)
-        
+
+        # Send a packet
+        index = random.randint(0,MAX_NODES-1)
+        H.SendPacket(index,HOP_COUNT,T)
+        # print index
+
+
         # Tracing
         trace.write(str(elapsed)+'\n')
         # Take a nap
         time.sleep(random.uniform(0,1))
 
+
     trace.close()
+    # Test
+    closeFile()
     # # TODO: Find out how to kill a Thread
     # # Kill the Thread :(
     os.system("killall python")

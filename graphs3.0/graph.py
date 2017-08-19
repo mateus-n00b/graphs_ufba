@@ -9,10 +9,11 @@
 from scipy.spatial import distance
 from threading import Thread
 import time
+from log import LOGGER
 
 gl_retx = 0
 gl_droPKT = 0
-
+visited = []
 
 class Graph(object):
     def __init__(self,G,W,mobility_model,MAX_NODES,MAX_RANGE):
@@ -25,6 +26,7 @@ class Graph(object):
         self.verbose = None # for print infos
 
     def _LOG_(self, msg):
+        LOGGER("{0}".format(msg)) # for loggin purposes
         if "y" in self.verbose.lower():
             print "[LOG] {0}".format(msg)
 
@@ -58,7 +60,7 @@ class Graph(object):
                                 self.W[j][i] = distUV
                                 self._LOG_("Edge (%d <- %f -> %d) added!" %(i,distUV,j))
 
-            time.sleep(0.3)
+            time.sleep(0.2)
 
     # Are all neighbours still in the neighbourhood?
     def Management(self):
@@ -76,7 +78,7 @@ class Graph(object):
                                 self.W[u].__delitem__(v)
                                 self.W[v].__delitem__(u)
                                 self._LOG_("Edge (%d <- %f -> %d) is down!" %(u,distUV,v))
-            time.sleep(0.1)
+            time.sleep(0.2)
 
     # Naive tracer
     def Tracer(self):
@@ -93,21 +95,28 @@ class Graph(object):
     def SendPacket(self,s,ttl,MST):
         global gl_retx
         global gl_droPKT
+        global visited
 
         temp = [(int(i),int(j)) for w,i,j in MST ]
+        self._LOG_("Node %d sending packet" % s)
+
         if ttl <= 0:
             gl_droPKT+=1
             self._LOG_("Packet dropped on %d" % s)
         else:
             ttl-=1
             for u in self.G[s]:
-                if (s,u) not in temp:
+                if (s,u) not in temp and u not in visited:
+                    visited.append(u)
+                    visited.append(s)
                     gl_retx+=1
                     self.SendPacket(u,ttl,MST)
                 else:
+                    visited = []
                     self._LOG_("Packet received by %d" % s)
                     break
         self.Tracer()
+
     # May be useful
     def BFS(self,s):
         level = {s:0}
