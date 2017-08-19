@@ -24,64 +24,62 @@ class Graph(object):
         if "y" in self.verbose.lower():
             print "[LOG] {0}".format(msg)
 
-    def SetPosition(self,G,W,mobility_model,MAX_NODES,MAX_RANGE):
+    def SetPosition(self):
         while 1:
-            for i in range(0,MAX_NODES):
+            for i in range(0,self.MAX_NODES):
                 # Move!!!
                 # Return the coordinates of nodes
-                positions = next(mobility_model)
+                positions = next(self.mobility_model)
                 self.POS = positions
 
-                for j in range(i+1,MAX_NODES):
+                for j in range(0,self.MAX_NODES):
                     # Vertices positions
                     u = (positions[i][0],positions[i][1])
                     v = (positions[j][0],positions[j][1])
-
                     distUV = distance.euclidean(u,v)
-                    if (distUV <= MAX_RANGE) and (j not in G[i]) and (i not in G[j]): # Is in my coverage area? If yes, then is my neighbour!
-                        # Builds the Graph adj. list
-                        G[i].append(j)
-                        G[j].append(i)
 
-                        # Builds the Graph Weight list
-                        if not W.has_key(i):
-                            W[i] = {}
-                        if not W.has_key(j):
-                            W[j] = {}
+                    if (distUV <= self.MAX_RANGE) and (j not in self.G[i])\
+                    and (i not in self.G[j]) and (i!=j): # Is in my coverage area? If yes, then is my neighbour!
+                                # Builds the Graph adj. list
+                                self.G[i].append(j)
+                                self.G[j].append(i)
 
-                        W[i][j] = distUV
-                        W[j][i] = distUV
-                        self._LOG_("Edge (%d <- %f -> %d) added!" %(i,distUV,j))
+                                # Builds the Graph Weight list
+                                if not self.W.has_key(i):
+                                        self.W[i] = {}
+                                if not self.W.has_key(j):
+                                        self.W[j] = {}
 
-            time.sleep(0.2)
+                                self.W[i][j] = distUV
+                                self.W[j][i] = distUV
+                                self._LOG_("Edge (%d <- %f -> %d) added!" %(i,distUV,j))
+
+            time.sleep(0.3)
 
     # Are all neighbours still in the neighbourhood?
     def Management(self):
         while 1:
-            H = self.G
             pos = self.POS
             if len(pos) > 0:
-                for u in range(0,len(H)):
-                    for v in H[u]:
+                for u in range(0,len(self.G)):
+                    for v in self.G[u]:
                         x = (pos[u][0],pos[u][1])
                         y = (pos[v][0],pos[v][1])
                         distUV = distance.euclidean(x,y)
                         if distUV > self.MAX_RANGE: # Is out of my coverage range?
-                            self.G[u].remove(v)
-                            # BUG: Error index 
-                            self.G[v].remove(u)
-                            self.W[u].__delitem__(v)
-                            self.W[v].__delitem__(u)
-                            self._LOG_("Edge (%d <- %f -> %d) is down!" %(u,distUV,v))
+                                self.G[u].remove(v)
+                                self.G[v].remove(u)
+                                self.W[u].__delitem__(v)
+                                self.W[v].__delitem__(u)
+                                self._LOG_("Edge (%d <- %f -> %d) is down!" %(u,distUV,v))
 
-            time.sleep(0.5)
+            time.sleep(0.2)
 
     def Run(self):
         self.verbose = raw_input("Verbose y/n? ") # Verbose?
 
         # TODO: How to kill these threads?
-        p = Thread(group=None,target=self.SetPosition,
-        args=(self.G,self.W,self.mobility_model,self.MAX_NODES, self.MAX_RANGE))
+        p = Thread(group=None,target=self.SetPosition)
         p.start()
 
         t = Thread(group=None,target=self.Management)
