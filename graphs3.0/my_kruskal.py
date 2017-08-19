@@ -49,6 +49,7 @@ def kruskal(G,W):
     mst = set()
     memo = set() # Records what edges were visited
     recalcs = open("/tmp/avoided_recalcs.txt","a+")
+    count_recalc = 0
     # puts all the vertices in seperate sets
     for vertice in graph['V']:
         make_set(vertice)
@@ -56,6 +57,7 @@ def kruskal(G,W):
     edges = list(graph['E'])
     # sorts edges in ascending order
     edges.sort()
+    edges.reverse()
     # In my case, the list will be sorted in descending order (edges.reverse)
     # logging_kruskal(G,weight)
     logging(G,[])
@@ -73,7 +75,9 @@ def kruskal(G,W):
 
             memo.add((u,v))
         else:
-            recalcs.write("1\n")
+            count_recalc +=1
+
+    recalcs.write(str(count_recalc)+"\n")
     recalcs.close()
     return mst
 

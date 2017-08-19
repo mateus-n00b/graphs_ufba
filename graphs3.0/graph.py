@@ -72,8 +72,39 @@ class Graph(object):
                                 self.W[u].__delitem__(v)
                                 self.W[v].__delitem__(u)
                                 self._LOG_("Edge (%d <- %f -> %d) is down!" %(u,distUV,v))
+            time.sleep(0.1)
 
-            time.sleep(0.2)
+    def SendPacket(self,s,ttl,MST):
+        temp = [(int(i),int(j)) for w,i,j in MST ]
+        if ttl <= 0:
+            self._LOG_("Packet dropped on %d" % s)
+        else:
+            ttl-=1
+            for u in self.G[s]:
+                if (s,u) not in temp:
+                    self.SendPacket(u,ttl,MST)
+                else:
+                    self._LOG_("Packet received by %d" % s)
+                    break
+
+
+    # May be useful
+    def BFS(self,s):
+        level = {s:0}
+        parent = {s:None}
+        i=1
+        frontier =[s]
+        while frontier:
+            nxt = []
+            for u in frontier:
+                for v in self.G[u]:
+                    if v not in level:
+                        level[v]=i
+                        parent[v] = u
+                        nxt.append(v)
+            frontier = nxt
+            i+=1
+        return level
 
     def Run(self):
         self.verbose = raw_input("Verbose y/n? ") # Verbose?

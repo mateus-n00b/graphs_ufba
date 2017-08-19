@@ -28,23 +28,29 @@ import copy # to copy a list
 MAX_NODES = 25
 MAX_RANGE = 100
 SIM_TIME = 10000
+HOP_COUNT = 6
 
 #                                  Adj. List and Weights
 G = [ [] for i in range(MAX_NODES)]
 W = {}
 
-SetSeed(1000)
-# Default mobility model                      X    Y
-mob = random_waypoint(MAX_NODES, dimensions=(500, 50), velocity=(0.1, 1.0), wt_max=0.8) # check this
+#                                  Seeds
+SetSeed(1000) # Set a seed to control the randomicity
+random.seed(1000)
 
+# Default mobility model                      X    Y
+mob = random_waypoint(MAX_NODES, dimensions=(1000, 50), velocity=(0.1, 1.0), wt_max=0.8) # check this
+
+#                                       Graph object
 H = Graph(G,W,mob,MAX_NODES,MAX_RANGE)
 H.Run()
 
 def main():
     global G
     global W
-
     PRUNING = False
+    T = set()
+
     # Using pruning?
     if len(sys.argv) > 1:
         PRUNING = True
@@ -61,9 +67,9 @@ def main():
     trace = open(f,'a+')
 
     for i in range(SIM_TIME):
-        TMP = []
-        Wb = {}
-        TMP = copy.deepcopy(G) # Use this because there's a bug on python
+        TMP = list()
+        Wb = dict()
+        TMP = copy.deepcopy(G) # Use this because there's a bug on
         Wb = copy.deepcopy(W) # list attribution (https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list)
 
         if PRUNING:
@@ -71,14 +77,16 @@ def main():
             TMP,Wb = pruning.pruning(TMP,Wb)
 
         start_time = timeit.default_timer()
-        print "[INFO] MST >", gl_algo.kruskal(TMP,Wb)
+        T = gl_algo.kruskal(TMP,Wb) # Creates the tree
         # Calculates execution time
         elapsed = timeit.default_timer() - start_time
-
+        H.SendPacket(random.randint(0,MAX_NODES-1),HOP_COUNT,T)
+        
         # Tracing
         trace.write(str(elapsed)+'\n')
-
+        # Take a nap
         time.sleep(random.uniform(0,1))
+
     trace.close()
     # # TODO: Find out how to kill a Thread
     # # Kill the Thread :(

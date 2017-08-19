@@ -44,6 +44,7 @@ def kruskal(G,W):
     edges = list(graph['E'])
     # sorts edges in ascending order
     edges.sort()
+    edges.reverse()
     # In my case, the list will be sorted in descending order (edges.reverse)
     # logging_kruskal(G,weight)
     logging(G,[])
