@@ -10,6 +10,7 @@ Finds a Maximum Spanning Tree (MST) in a dynamic Graph.
         * Iury Maia (UFBA)
 
 #Description
+
 These scripts are our final homework from discipline of Graphs and Algorithms.
 
 We have use a pruning heuristic to remove edges and vertices from a dynamic graph.
