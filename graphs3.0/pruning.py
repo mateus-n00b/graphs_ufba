@@ -28,7 +28,7 @@ def edge_pruning(G,W):
                         TMP[u].remove(v)
                     if u in TMP[v]:
                         TMP[v].remove(u)
-                    # print "Edge (%d,%d) removed!" % (u,v)
+                    print "Edge (%d,%d) removed!" % (u,v)
     return TMP,Wtemp
 
 
@@ -54,6 +54,7 @@ def pruning(G,W):
                 for e in TMP[i]:
                     if Wtemp[e].has_key(i):
                         Wtemp[e].__delitem__(i)
+                    if i in TMP[e]:
                         TMP[e].remove(i)
                 Wtemp[i] = {}
                 TMP[i] = []

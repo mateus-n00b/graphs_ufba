@@ -12,8 +12,9 @@ import time
 from log import LOGGER
 
 gl_retx = 0
-gl_droPKT = 0
+# gl_isr = 0
 visited = []
+vec_ids = []
 
 class Graph(object):
     def __init__(self,G,W,mobility_model,MAX_NODES,MAX_RANGE):
@@ -60,7 +61,7 @@ class Graph(object):
                                 self.W[j][i] = distUV
                                 self._LOG_("Edge (%d <- %f -> %d) added!" %(i,distUV,j))
 
-            time.sleep(0.2)
+            time.sleep(0.3)
 
     # Are all neighbours still in the neighbourhood?
     def Management(self):
@@ -78,44 +79,63 @@ class Graph(object):
                                 self.W[u].__delitem__(v)
                                 self.W[v].__delitem__(u)
                                 self._LOG_("Edge (%d <- %f -> %d) is down!" %(u,distUV,v))
-            time.sleep(0.2)
+            time.sleep(0.3)
 
     # Naive tracer
-    def Tracer(self):
+    def Tracer(self,gl_isr):
         global gl_retx
-        global gl_droPKT
 
-        rw = open("/tmp/retx.txt","w")
+        rw = open("/tmp/retx.tr","w")
         rw.write(str(gl_retx)+"\n")
         rw.close()
-        rw = open("/tmp/per.txt","w")
-        rw.write(str(gl_droPKT)+"\n")
-        rw.close()
+        if gl_isr != 0:
+            rw = open("/tmp/isr.tr","a+")
+            rw.write(str(gl_isr)+"\n")
+            rw.close()
 
-    def SendPacket(self,s,ttl,MST):
+    def SendPacket(self,s,ttl,m_id,MST):
         global gl_retx
-        global gl_droPKT
+        gl_isr = 0
         global visited
+        global vec_ids
 
+        # if len(MST) > 1:
         temp = [(int(i),int(j)) for w,i,j in MST ]
+        tmp_arr = []
+
+        for tup in temp: # A lot of 'POG'
+            tmp_arr.append(tup[0])
+            tmp_arr.append(tup[1])
+        # else:
+            # tmp_arr = MST
+
         self._LOG_("Node %d sending packet" % s)
 
         if ttl <= 0:
-            gl_droPKT+=1
             self._LOG_("Packet dropped on %d" % s)
         else:
             ttl-=1
             for u in self.G[s]:
-                if (s,u) not in temp and u not in visited:
+                if (u not in tmp_arr) and (u not in visited):
+                # if ((s,u) not in temp) and ((u,s) not in temp) and (u not in visited):
                     visited.append(u)
                     visited.append(s)
                     gl_retx+=1
-                    self.SendPacket(u,ttl,MST)
+                    self.SendPacket(u,ttl,m_id,MST)
                 else:
-                    visited = []
-                    self._LOG_("Packet received by %d" % s)
-                    break
-        self.Tracer()
+                    if m_id not in vec_ids: # Flooding control
+                        vec_ids = [m_id]
+                        gl_isr=1
+                        self._LOG_("Packet received by %d" % s)
+                        break
+        self.Tracer(gl_isr)
+
+    def clean(self):
+        global visited
+        global gl_retx
+        visited = []
+        # gl_retx = 0 Wrong
+
 
     # May be useful
     def BFS(self,s):

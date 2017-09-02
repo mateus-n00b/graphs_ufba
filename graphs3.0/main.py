@@ -29,7 +29,7 @@ import copy # to copy a list
 #                                   Global vars
 MAX_NODES = 25
 MAX_RANGE = 100
-SIM_TIME = 4
+SIM_TIME = 1000
 HOP_COUNT = 5
 
 #                                  Adj. List and Weights
@@ -41,7 +41,7 @@ SetSeed(MAX_NODES) # Set a seed to control the randomicity
 random.seed(MAX_NODES)
 
 # Default mobility model                      X    Y
-mob = random_waypoint(MAX_NODES, dimensions=(1000, 50), velocity=(0.1, 1.0), wt_max=0.8) # check this
+mob = random_waypoint(MAX_NODES, dimensions=(1000, 100), velocity=(10.0, 20.0), wt_max=0.5) # check this
 
 #                                       Graph object
 H = Graph(G,W,mob,MAX_NODES,MAX_RANGE)
@@ -68,26 +68,36 @@ def main():
     f =  "/tmp/pruning.txt" if PRUNING  else "/tmp/nopruning.txt"
     trace = open(f,'a+')
 
+    tmp_aux = copy.deepcopy(G)
+    tmp_auxb = copy.deepcopy(W)
+
     for i in range(SIM_TIME):
         TMP = list()
         Wb = dict()
-        TMP = copy.deepcopy(G) # Use this because there's a bug on
-        Wb = copy.deepcopy(W) # list attribution (https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list)
+
+        try:
+            TMP = copy.deepcopy(G) # Use this because there's a bug on
+            Wb = copy.deepcopy(W) # list attribution (https://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list)
+        except:
+            TMP = tmp_aux
+            Wb = tmp_auxb
 
         if PRUNING:
             TMP,Wb = pruning.edge_pruning(TMP,Wb) # pruning every execution?
             TMP,Wb = pruning.pruning(TMP,Wb)
 
-        start_time = timeit.default_timer()
+        # start_time = timeit.default_timer()
+        start_time = timeit.time.time()
         T = gl_algo.kruskal(TMP,Wb) # Creates the tree
         # Calculates execution time
-        elapsed = timeit.default_timer() - start_time
+        # elapsed = timeit.default_timer() - start_time
+        elapsed = timeit.time.time() - start_time
 
         # Send a packet
         index = random.randint(0,MAX_NODES-1)
-        H.SendPacket(index,HOP_COUNT,T)
-        # print index
-
+        H.SendPacket(index,HOP_COUNT,index,T)
+        print "Node {0} sending packet".format(index)
+        H.clean()
 
         # Tracing
         trace.write(str(elapsed)+'\n')

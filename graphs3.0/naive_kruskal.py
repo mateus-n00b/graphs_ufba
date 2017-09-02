@@ -63,8 +63,11 @@ def run(G,weight):
     graph['V'] = [str(i) for i in range(0,len(G))]
     for i in range(0,len(G)):
         for j in G[i]:
-            conj.add((weight[i][j],str(i),str(j)))
-            conj.add((weight[j][i],str(j),str(i)))
+            try:
+                conj.add((weight[i][j],str(i),str(j)))
+                conj.add((weight[j][i],str(j),str(i)))
+            except:
+                print "[INFO] Error!!!"
 
     graph['E'] = conj
     return graph

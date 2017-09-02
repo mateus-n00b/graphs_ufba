@@ -48,8 +48,6 @@ def kruskal(G,W):
     graph = run(G,W) # Turn a list into a list of tuples
     mst = set()
     memo = set() # Records what edges were visited
-    recalcs = open("/tmp/avoided_recalcs.txt","a+")
-    count_recalc = 0
     # puts all the vertices in seperate sets
     for vertice in graph['V']:
         make_set(vertice)
@@ -74,11 +72,7 @@ def kruskal(G,W):
             #            isBetterThan(G,u,v,mst)
 
             memo.add((u,v))
-        else:
-            count_recalc +=1
 
-    recalcs.write(str(count_recalc)+"\n")
-    recalcs.close()
     return mst
 
 def run(G,weight):
@@ -87,13 +81,10 @@ def run(G,weight):
     graph['V'] = [str(i) for i in range(0,len(G))]
     for i in range(0,len(G)):
         for j in G[i]:
-            # try:
                 if weight[i].has_key(j):
                     conj.add((weight[i][j],str(i),str(j)))
                 if weight[j].has_key(i):
                     conj.add((weight[j][i],str(j),str(i)))
-            # except:
-            #     print "F0und 4 bug!!!"
     graph['E'] = conj
     return graph
 
